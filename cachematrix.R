@@ -15,11 +15,11 @@ makeCacheMatrix <- function(x = matrix()) {
   ## Computing the inverse of a square matrix can be done with the solve function in R
   ## For example, if X is a square invertible matrix, then solve(X) returns its inverse
   
-  setmean <- function(solve) m <<- solve
-  getmean <- function() m
+  setInverse <- function(solve) m <<- solve
+  getInverse <- function() m
   list(set = set, get = get,
-       setmean = setmean,
-       getmean = getmean)
+       setInverse = setInverse,
+       getInverse = getInverse)
 }
 
 
@@ -27,13 +27,14 @@ makeCacheMatrix <- function(x = matrix()) {
 
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
-  m <- x$getmean()
+  m <- x$getInverse()
   if(!is.null(m)) {
-    message("getting cached data")
+    ## if the matrix is in cache, then return 'getting cached data' with the cache & return
+    message("getting cached data")  
     return(m)
   }
   data <- x$get()
-  m <- mean(data, ...)
-  x$setmean(m)
+  m <- solve(data, ...)
+  x$setInverse(m)
   m
 }
